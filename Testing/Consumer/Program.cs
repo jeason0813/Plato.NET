@@ -44,8 +44,9 @@ namespace Consumer
                         break;
                     }
 
-                    var sample = JsonConvert.DeserializeObject<SampleData>(data);
-                    RILogManager.Default.SendMessage(sample.Name);
+                    //var sample = JsonConvert.DeserializeObject<SampleData>(data);
+                    //RILogManager.Default.SendMessage(sample.Name);
+                    RILogManager.Default.SendJSON("Data", data);
                 }
                 catch (TimeoutException)
                 {
@@ -62,7 +63,8 @@ namespace Consumer
         {            
             IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
             IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
-            RMQQueueSettings queueSettings = _configurationManager.GetQueueSettings("ProConQueueTest");
+            //RMQQueueSettings queueSettings = _configurationManager.GetQueueSettings("ProConQueueTest");
+            RMQQueueSettings queueSettings = _configurationManager.GetQueueSettings("Test.Queue1");
 
             using (IRMQConsumerText consumerText = new RMQConsumerText(_connectionManager, "defaultConnection", queueSettings))
             {
@@ -139,10 +141,10 @@ namespace Consumer
         {
             try
             {
-                //ConsumerTest();
+                ConsumerTest();
                 //SubscribeFanoutTest();
                 //SubscribeDirectTest();
-                SubscribeTopicTest();
+                //SubscribeTopicTest();
             }
             catch(Exception ex)
             {
