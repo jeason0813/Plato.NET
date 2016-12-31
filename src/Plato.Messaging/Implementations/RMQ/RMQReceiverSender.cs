@@ -5,6 +5,7 @@
 using Plato.Messaging.Implementations.RMQ.Interfaces;
 using Plato.Messaging.Interfaces;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 using System;
 
 namespace Plato.Messaging.Implementations.RMQ
@@ -67,9 +68,19 @@ namespace Plato.Messaging.Implementations.RMQ
 
         protected virtual void CloseConnection()
         {
-            _connection?.Close();
-            _connection?.Dispose();
-            _connection = null;
+            try
+            {
+                _connection?.Close();
+            }
+            catch (AlreadyClosedException)
+            {
+                // just swallow as it's safe to continue with the close process.
+            }
+            finally
+            {
+                _connection?.Dispose();
+                _connection = null;
+            }
         }
 
         protected virtual void OpenChannel()

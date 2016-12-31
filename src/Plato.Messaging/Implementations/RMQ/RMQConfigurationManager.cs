@@ -102,12 +102,12 @@ namespace Plato.Messaging.Implementations.RMQ
 
             return new RMQConnectionSettings()
             {
-                HostName = StringHelper.IfNullOrEmptyUseDefault(attributes["hostname"], string.Empty),
+                Protocol = Protocols.DefaultProtocol,
                 Username = StringHelper.IfNullOrEmptyUseDefault(attributes["username"], string.Empty),
                 Password = StringHelper.IfNullOrEmptyUseDefault(attributes["password"], string.Empty),
                 VirtualHost = StringHelper.IfNullOrEmptyUseDefault(attributes["virtualhost"], string.Empty),
-                Port = int.Parse(StringHelper.IfNullOrEmptyUseDefault(attributes["port"], "5672")),
-                Protocol = Protocols.DefaultProtocol
+                DelayOnReconnect = int.Parse(StringHelper.IfNullOrEmptyUseDefault(attributes["delayOnReconnect"], "1000")),
+                Uri = StringHelper.IfNullOrEmptyUseDefault(attributes["uri"], "amqp://localhost:5672"),
             };
         }
 
