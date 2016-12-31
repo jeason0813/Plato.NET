@@ -183,10 +183,10 @@ namespace Producer
         {
             try
             {
-                //ProducerTest();
+                ProducerTest();
                 //SubscribeFanoutTest();
                 //PubSubDirectTest();
-                PubSubTopicTest();
+                //PubSubTopicTest();
             }
             catch (Exception ex)
             {
