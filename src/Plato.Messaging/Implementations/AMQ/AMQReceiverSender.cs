@@ -4,6 +4,7 @@
 
 using Apache.NMS;
 using Plato.Messaging.Implementations.AMQ.Interfaces;
+using Plato.Messaging.Implementations.AMQ.Settings;
 using Plato.Messaging.Interfaces;
 using System;
 
@@ -14,8 +15,8 @@ namespace Plato.Messaging.Implementations.AMQ
     /// </summary>
     /// <seealso cref="Plato.Messaging.Interfaces.IMessageReceiverSender" />
     public abstract class AMQReceiverSender : IMessageReceiverSender
-    {
-        protected readonly string _connectionName;
+    {        
+        protected readonly AMQConnectionSettings _connectionSettings;
         protected readonly IAMQConnectionFactory _connectionFactory;        
         protected IConnection _connection;
         protected ISession _session;
@@ -32,11 +33,11 @@ namespace Plato.Messaging.Implementations.AMQ
         /// Initializes a new instance of the <see cref="AMQReceiverSender"/> class.
         /// </summary>
         /// <param name="settings">The settings.</param>
-        public AMQReceiverSender(IAMQConnectionFactory connctionFactory, string connectionName)
+        public AMQReceiverSender(IAMQConnectionFactory connectionFactory, AMQConnectionSettings connectionSettings)
         {
             Disposed = false;
-            _connectionFactory = connctionFactory;
-            _connectionName = connectionName;
+            _connectionSettings = connectionSettings;
+            _connectionFactory = connectionFactory;            
             _connection = null;
             _session = null;            
         }
@@ -95,7 +96,7 @@ namespace Plato.Messaging.Implementations.AMQ
         {
             if (_connection == null)
             {
-                _connection = _connectionFactory.CreateConnection(_connectionName);
+                _connection = _connectionFactory.CreateConnection(_connectionSettings);
             }
 
             if (_session == null)

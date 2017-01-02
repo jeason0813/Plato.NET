@@ -100,7 +100,7 @@ namespace Plato.Messaging.Implementations.RMQ
         {
             var attributes = GetAttributes("connectionSettings", name);
 
-            return new RMQConnectionSettings()
+            var settings = new RMQConnectionSettings()
             {
                 Protocol = Protocols.DefaultProtocol,
                 Username = StringHelper.IfNullOrEmptyUseDefault(attributes["username"], string.Empty),
@@ -109,6 +109,13 @@ namespace Plato.Messaging.Implementations.RMQ
                 DelayOnReconnect = int.Parse(StringHelper.IfNullOrEmptyUseDefault(attributes["delayOnReconnect"], "1000")),
                 Uri = StringHelper.IfNullOrEmptyUseDefault(attributes["uri"], "amqp://localhost:5672"),
             };
+
+            foreach (var uri in settings.Uri.Trim().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                settings.Endpoints.Add(uri);
+            }
+
+           return settings;
         }
 
         /// <summary>

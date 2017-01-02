@@ -13,11 +13,11 @@ namespace Plato.Messaging.Implementations.RMQ
     public class RMQPublisherText : RMQPublisher, IRMQPublisherText
     {
         public RMQPublisherText(
-            IRMQConnectionFactory connctionFactory, 
-            string connectionName,
+            IRMQConnectionFactory connectionFactory,
+            RMQConnectionSettings connectionSettings,
             RMQExchangeSettings exchangeSettings,
             RMQQueueSettings queueSettings = null)
-            : base(connctionFactory, connectionName, exchangeSettings, queueSettings)
+            : base(connectionFactory, connectionSettings, exchangeSettings, queueSettings)
         {
         }
 

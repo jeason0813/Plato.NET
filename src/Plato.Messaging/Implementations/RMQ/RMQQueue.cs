@@ -15,10 +15,10 @@ namespace Plato.Messaging.Implementations.RMQ
         protected readonly RMQQueueSettings _queueSettings;
         
         public RMQQueue(
-            IRMQConnectionFactory connctionFactory, 
-            string connectionName, 
+            IRMQConnectionFactory connectionFactory,
+            RMQConnectionSettings connectionSettings,
             RMQQueueSettings queueSettings) 
-            : base(connctionFactory, connectionName)
+            : base(connectionFactory, connectionSettings)
         {
             _queueSettings = queueSettings;
         }       

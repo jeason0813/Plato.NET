@@ -60,13 +60,14 @@ namespace Consumer
         }
 
         static void ConsumerTest()
-        {            
+        {
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
             IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            RMQConnectionSettings connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
             //RMQQueueSettings queueSettings = _configurationManager.GetQueueSettings("ProConQueueTest");
             RMQQueueSettings queueSettings = _configurationManager.GetQueueSettings("Test.Queue1");
 
-            using (IRMQConsumerText consumerText = new RMQConsumerText(_connectionManager, "defaultConnection", queueSettings))
+            using (IRMQConsumerText consumerText = new RMQConsumerText(_connectionManager, connectionSettings, queueSettings))
             {
                 Reciever(consumerText);
             }
@@ -74,15 +75,16 @@ namespace Consumer
 
         static void SubscribeFanoutTest()
         {
-            IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
+            IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();            
+            RMQConnectionSettings connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
 
             var exchangeSettings = _configurationManager.GetExchangeSettings("Test.FanoutExchange");
             var queueSettings = _configurationManager.GetQueueSettings("Test.FanoutQueue");
 
             queueSettings.QueueName += Guid.NewGuid().ToString();
 
-            using (IRMQSubscriberText consumerText = new RMQSubscriberText(_connectionManager, "defaultConnection", exchangeSettings, queueSettings))
+            using (IRMQSubscriberText consumerText = new RMQSubscriberText(_connectionManager, connectionSettings, exchangeSettings, queueSettings))
             {
                 Reciever(consumerText);
             }
@@ -90,8 +92,9 @@ namespace Consumer
 
         static void SubscribeDirectTest()
         {
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
             IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            RMQConnectionSettings connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
 
             var exchangeSettings = _configurationManager.GetExchangeSettings("Test.DirectExchange");
             var queueSettings = _configurationManager.GetQueueSettings("Test.DirectQueue");           
@@ -106,7 +109,7 @@ namespace Consumer
 
             Console.WriteLine($"Binding Routing Key: {route}");
 
-            using (IRMQSubscriberText consumerText = new RMQSubscriberText(_connectionManager, "defaultConnection", exchangeSettings, queueSettings))
+            using (IRMQSubscriberText consumerText = new RMQSubscriberText(_connectionManager, connectionSettings, exchangeSettings, queueSettings))
             {
                 Reciever(consumerText);
             }
@@ -117,8 +120,9 @@ namespace Consumer
             var rnd = new Random((int)DateTime.Now.Ticks);
             var number = rnd.Next(2) + 1;
 
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
             IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            RMQConnectionSettings connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
 
             var exchangeSettings = _configurationManager.GetExchangeSettings("Test.TopicExchange");
             var queueSettings = _configurationManager.GetQueueSettings($"Test.TopicQueue{number}");
@@ -130,7 +134,7 @@ namespace Consumer
                 Console.WriteLine($"Binding Routing Key: {route}");
             }
 
-            using (IRMQSubscriberText consumerText = new RMQSubscriberText(_connectionManager, "defaultConnection", exchangeSettings, queueSettings))
+            using (IRMQSubscriberText consumerText = new RMQSubscriberText(_connectionManager, connectionSettings, exchangeSettings, queueSettings))
             {
                 Reciever(consumerText);
             }

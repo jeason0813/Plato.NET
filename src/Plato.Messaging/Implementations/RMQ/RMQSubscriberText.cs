@@ -8,17 +8,27 @@ using System.Threading;
 
 namespace Plato.Messaging.Implementations.RMQ
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Plato.Messaging.Implementations.RMQ.RMQSubscriber" />
+    /// <seealso cref="Plato.Messaging.Implementations.RMQ.Interfaces.IRMQSubscriberText" />
     public class RMQSubscriberText : RMQSubscriber, IRMQSubscriberText
     {
         public RMQSubscriberText(
-            IRMQConnectionFactory connctionFactory,
-            string connectionName,
+            IRMQConnectionFactory connectionFactory,
+            RMQConnectionSettings connectionSettings,
             RMQExchangeSettings exchangeSettings,
             RMQQueueSettings queueSettings)
-            : base(connctionFactory, connectionName, exchangeSettings, queueSettings)
+            : base(connectionFactory, connectionSettings, exchangeSettings, queueSettings)
         {
         }
 
+        /// <summary>
+        /// Receives the specified msec timeout.
+        /// </summary>
+        /// <param name="msecTimeout">The msec timeout.</param>
+        /// <returns></returns>
         public RMQReceiverResultText Receive(int msecTimeout = Timeout.Infinite)
         {
             var result = _Receive(msecTimeout);

@@ -4,13 +4,13 @@
 
 using Plato.Messaging.Implementations.RMQ.Interfaces;
 using Plato.Messaging.Implementations.RMQ.Settings;
-using System.Collections.Generic;
 
 namespace Plato.Messaging.Implementations.RMQ.Factories
 {
     /// <summary>
     /// 
     /// </summary>
+    /// <seealso cref="Plato.Messaging.Implementations.RMQ.Interfaces.IRMQPublisherFactory" />
     public class RMQPublisherFactory : IRMQPublisherFactory
     {
         private readonly IRMQConnectionFactory _connectionFactory;
@@ -24,20 +24,34 @@ namespace Plato.Messaging.Implementations.RMQ.Factories
             _connectionFactory = connectionFactory;
         }
 
+        /// <summary>
+        /// Creates the byte.
+        /// </summary>
+        /// <param name="connectionSettings">The connection settings.</param>
+        /// <param name="exchangeSettings">The exchange settings.</param>
+        /// <param name="queueSettings">The queue settings.</param>
+        /// <returns></returns>
         public IRMQPublisherByte CreateByte(
-            string connectionName, 
+            RMQConnectionSettings connectionSettings,
             RMQExchangeSettings exchangeSettings, 
             RMQQueueSettings queueSettings)
         {
-            return new RMQPublisherByte(_connectionFactory, connectionName, exchangeSettings, queueSettings);
+            return new RMQPublisherByte(_connectionFactory, connectionSettings, exchangeSettings, queueSettings);
         }
 
+        /// <summary>
+        /// Creates the text.
+        /// </summary>
+        /// <param name="connectionSettings">The connection settings.</param>
+        /// <param name="exchangeSettings">The exchange settings.</param>
+        /// <param name="queueSettings">The queue settings.</param>
+        /// <returns></returns>
         public IRMQPublisherText CreateText(
-            string connectionName,
+            RMQConnectionSettings connectionSettings,
             RMQExchangeSettings exchangeSettings,
             RMQQueueSettings queueSettings)
         {
-            return new RMQPublisherText(_connectionFactory, connectionName, exchangeSettings, queueSettings);
+            return new RMQPublisherText(_connectionFactory, connectionSettings, exchangeSettings, queueSettings);
         }
     }
 }

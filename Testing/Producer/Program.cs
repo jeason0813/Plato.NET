@@ -93,12 +93,14 @@ namespace Producer
         }
 
         static void ProducerTest()
-        {            
-            IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+        {
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
+            IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();            
+            RMQConnectionSettings _connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
+                        
             var queueSettings = _configurationManager.GetQueueSettings("ProConQueueTest");
 
-            using (IRMQProducerText producerText = new RMQProducerText(_connectionManager, "defaultConnection", queueSettings))
+            using (IRMQProducerText producerText = new RMQProducerText(_connectionManager, _connectionSettings, queueSettings))
             {
                 Sender(producerText);
             }
@@ -106,11 +108,13 @@ namespace Producer
 
         static void SubscribeFanoutTest()
         {
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
             IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            RMQConnectionSettings _connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
+            
             var exchangeSettings = _configurationManager.GetExchangeSettings("Test.FanoutExchange");
 
-            using (IRMQPublisherText publisherText = new RMQPublisherText(_connectionManager, "defaultConnection", exchangeSettings))
+            using (IRMQPublisherText publisherText = new RMQPublisherText(_connectionManager, _connectionSettings, exchangeSettings))
             {
                 Sender(publisherText);
             }
@@ -118,11 +122,13 @@ namespace Producer
 
         static void PubSubDirectTest()
         {
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
             IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            RMQConnectionSettings _connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
+            
             var exchangeSettings = _configurationManager.GetExchangeSettings("Test.DirectExchange");
 
-            using (IRMQPublisherText publisherText = new RMQPublisherText(_connectionManager, "defaultConnection", exchangeSettings))
+            using (IRMQPublisherText publisherText = new RMQPublisherText(_connectionManager, _connectionSettings, exchangeSettings))
             {
                 Sender(publisherText, new List<string> { "R1", "R2", "R3"});
             }
@@ -130,11 +136,13 @@ namespace Producer
 
         static void PubSubTopicTest()
         {
-            IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();
-            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory(_configurationManager);
+            IRMQConnectionFactory _connectionManager = new RMQConnectionFactory();
+            IRMQConfigurationManager _configurationManager = new RMQConfigurationManager();            
+            RMQConnectionSettings _connectionSettings = _configurationManager.GetConnectionSettings("defaultConnection");
+
             var exchangeSettings = _configurationManager.GetExchangeSettings("Test.TopicExchange");
 
-            using (IRMQPublisherText publisherText = new RMQPublisherText(_connectionManager, "defaultConnection", exchangeSettings))
+            using (IRMQPublisherText publisherText = new RMQPublisherText(_connectionManager, _connectionSettings, exchangeSettings))
             {
                 Console.WriteLine("Press any key...");
                 Console.ReadKey();

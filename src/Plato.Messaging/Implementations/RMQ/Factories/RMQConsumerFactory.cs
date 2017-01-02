@@ -26,23 +26,23 @@ namespace Plato.Messaging.Implementations.RMQ.Factories
         /// <summary>
         /// Creates the byte.
         /// </summary>
-        /// <param name="settings">The settings.</param>
-        /// <param name="connectionName">Name of the connection.</param>
+        /// <param name="connectionSettings">The connection settings.</param>
+        /// <param name="queueSettings">The settings.</param>
         /// <returns></returns>
-        public IRMQConsumerByte CreateByte(RMQQueueSettings settings, string connectionName)
+        public IRMQConsumerByte CreateByte(RMQConnectionSettings connectionSettings, RMQQueueSettings queueSettings)
         {
-            return new RMQConsumerByte(_connectionFactory, connectionName, settings);
+            return new RMQConsumerByte(_connectionFactory, connectionSettings, queueSettings);
         }
 
         /// <summary>
         /// Creates the text.
         /// </summary>
-        /// <param name="settings">The settings.</param>
-        /// <param name="connectionName">Name of the connection.</param>
+        /// <param name="connectionSettings">The connection settings.</param>
+        /// <param name="queueSettings">The queue settings.</param>
         /// <returns></returns>
-        public IRMQConsumerText CreateText(RMQQueueSettings settings, string connectionName)
+        public IRMQConsumerText CreateText(RMQConnectionSettings connectionSettings, RMQQueueSettings queueSettings)
         {
-            return new RMQConsumerText(_connectionFactory, connectionName, settings);
+            return new RMQConsumerText(_connectionFactory, connectionSettings, queueSettings);
         }
     }
 }

@@ -8,17 +8,32 @@ using System.Threading;
 
 namespace Plato.Messaging.Implementations.RMQ
 {
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Plato.Messaging.Implementations.RMQ.RMQConsumer" />
+    /// <seealso cref="Plato.Messaging.Implementations.RMQ.Interfaces.IRMQConsumerByte" />
     public class RMQConsumerByte : RMQConsumer, IRMQConsumerByte
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RMQConsumerByte" /> class.
+        /// </summary>
+        /// <param name="connectionFactory">The connection factory.</param>
+        /// <param name="connectionSettings">The connection settings.</param>
+        /// <param name="queueSettings">The settings.</param>
         public RMQConsumerByte(
-            IRMQConnectionFactory connctionFactory, 
-            string connectionName, 
-            RMQQueueSettings settings) 
-            : base(connctionFactory, connectionName, settings)
+            IRMQConnectionFactory connectionFactory,
+            RMQConnectionSettings connectionSettings,
+            RMQQueueSettings queueSettings) 
+            : base(connectionFactory, connectionSettings, queueSettings)
         {
         }
 
+        /// <summary>
+        /// Receives the specified msec timeout.
+        /// </summary>
+        /// <param name="msecTimeout">The msec timeout.</param>
+        /// <returns></returns>
         public RMQReceiverResultByte Receive(int msecTimeout = Timeout.Infinite)
         {
             var deliveryArgs = _Receive(msecTimeout);
